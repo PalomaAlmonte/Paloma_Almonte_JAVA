@@ -8,6 +8,7 @@ public class Customer extends AccountRecord {
     private String name;
     private List<AccountRecord> charges = new ArrayList<>();
 
+    int balance = 0;
     public int getId() {
 
         return id;
@@ -30,9 +31,8 @@ public class Customer extends AccountRecord {
 
     public int getBalance() {
         //update this
-        int balance = 0;
-        for (AccountRecord charge : charges) {
 
+        for (AccountRecord charge : charges) {
 
             balance += charge.getCharge();
         }

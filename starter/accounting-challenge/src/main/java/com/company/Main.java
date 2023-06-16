@@ -3,7 +3,6 @@ package com.company;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 public class Main {
 
     private static List<String[]> customerData = Arrays.asList(
@@ -23,70 +22,65 @@ public class Main {
             new String[] {"3","Ace Chemical","140000","01-25-2022"},
             new String[] {"2","Daily Planet","5000","12-12-2022"},
             new String[] {"3","Ace Chemical","-82000","01-03-2022"},
-
             new String[] {"1","Wayne Enterprises","10000","12-01-2021"}
     );
 
     public static void main(String[] args) {
-        //Update this
-        // list<custumer> = Customers objects
-        // create lists of customer objects to add them and access them later
-        List<Customer> customer = new ArrayList<>();
-        AccountRecord accountRecord = new AccountRecord();
-        Customer customerob = new Customer();
+        List<Customer> customers = convertToCustomers(customerData);
 
-        for (String[] customerRecord : customerData) {
-            //Integer.parseInt() converts a String
-            int id = Integer.parseInt(customerRecord[0]);
-            String name = customerRecord[1];
-            int charges = Integer.parseInt(customerRecord[2]);
+        System.out.println("Customers:");
+        for (Customer customer : customers) {
+            System.out.println(customer.toString());
+        }
+        System.out.println("********************************************");
+        System.out.println("\nPositive accounts:");
 
-            //customerob.getCharges().add(charges);
+        for ( String[] customer : customerData) {
+            int charge =  Integer.parseInt(customer[2]);
+            if (charge > 0)  {
+                System.out.println("\nName: " + customer[1] + "\nCharge: " + charge );
+            }
+        }
+
+        System.out.println("********************************************");
+        System.out.println("\nNegative accounts:");
+        for ( String[] customer : customerData) {
+            int charge =  Integer.parseInt(customer[2]);
+            if (charge < 0)  {
+                System.out.println("\nName: " + customer[1] + "\nCharge: " + charge );
+            }
+        }
+    }
+
+    public static List<Customer> convertToCustomers(List<String[]> customerData) {
+        List<Customer> customers = new ArrayList<>();
+
+        for (String[] data : customerData) {
+            int id = Integer.parseInt(data[0]);
+            String name = data[1];
+            int charge = Integer.parseInt(data[2]);
 
 
-            // Check if customer already exists in the list
-
-            boolean customerExists = false;
-
-            // iterate if customer id found in list then break
-            for (Customer customers : customer) {
-                if (customers.getId() == id) {
-                    customerExists = true;
+            Customer existingCustomer = null;
+            for (Customer customer : customers) {
+                if (customer.getId() == id) {
+                    existingCustomer = customer;
                     break;
                 }
             }
 
-            // If customer doesn't exist, create a new customer and add it to the list
-            if (!customerExists) {
-                Customer customers = new Customer();
-                customers.setId(id);
-                customers.setName(name);
-                customer.add(customers);
+            if (existingCustomer == null) {
+                existingCustomer = new Customer();
+                existingCustomer.setId(id);
+                existingCustomer.setName(name);
+                customers.add(existingCustomer);
             }
 
-        }
-        System.out.println(customer.toString());
+            AccountRecord accountRecord = new AccountRecord();
+            accountRecord.setCharge(charge);
 
-// Print the list of customers
-        for (Customer customers : customer) {
-            System.out.println("Customer ID: " + customers.getId() + ", Name: " + customers.getName());
-        }
+            existingCustomer.getCharges().add(accountRecord);
 
-        System.out.println("Positive accounts:");
-        for (Customer customers : customer) {
-            if (customers.getBalance() > 0) {
-                System.out.println(customers.toString());
-            }
-        }
-
-        System.out.println("Negative accounts:");
-        for (Customer customers : customer) {
-            if (customers.getBalance() < 0) {
-                System.out.println(customers.toString());
-            }
-        }
-
-
-
+        }return customers;
     }
 }
